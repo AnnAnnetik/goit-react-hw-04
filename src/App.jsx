@@ -1,33 +1,33 @@
-import { useEffect, useState } from 'react';
 import './App.css';
-import SearchBar from './components/SearchBar/SearchBar';
-
-import { Hearts } from 'react-loader-spinner';
+import { SearchBar } from './components/SearchBar/SearchBar';
 import { getPhotos } from './articles-api';
-import { Button } from './components/Button/Button';
+import Button from './components/Button/Button';
+import { ImageGallery } from './components/ImageGallery/ImageGallery';
+import Loader from './components/Loader/Loader';
+import ErrorMessage from './components/ErrorMessage/ErrorMessage';
+import { useEffect, useState } from 'react';
 
 function App() {
-  const [images, setImages] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [query, setQuery] = useState('');
-  const [page, setPage] = useState('');
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [photos, setPhotos] = useState([]);
+  const [isError, setIsError] = useState(false);
 
   const hendleSearch = query => {
     setQuery(query);
     setPage(1);
-    setImages([]);
+    setPhotos([]);
   };
-  const hendleClick = () => {
-    setPage(pre => pre + 1);
-  };
+
   useEffect(() => {
     if (!query) return;
     const fetchPhotos = async () => {
       try {
         setIsLoading(true);
         const response = await getPhotos(query, page);
-        setImages(pre => [...pre, ...response.images]);
+        setPhotos(response.photos);
       } catch (error) {
         setIsError(true);
       } finally {
@@ -37,37 +37,16 @@ function App() {
     fetchPhotos();
   }, [page, query]);
 
+  const hendleClick = () => {
+    setPage(pre => pre + 1);
+  };
+
   return (
     <header>
-      <SearchBar hendleSearch={hendleSearch} />
-      {isLoading && (
-        <div>
-          (
-          <Hearts
-            height="80"
-            width="80"
-            color="#4fa94d"
-            ariaLabel="hearts-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-            visible={true}
-          />
-          )
-        </div>
-      )}
-      {isError && <p>Помилка</p>}
-      <ul>
-        {Array.isArray(images) &&
-          images.map(image => (
-            <li key={image.id}>
-              <img width={250} height={250} src={image.urls.small} alt="" />
-              <h2>{image.user.name}</h2>
-              <p>Likes: {image.likes}</p>
-              <p>Total Likes: {image.user.total_likes}</p>
-              <p>Total Photos: {image.user.total_photos}</p>
-            </li>
-          ))}
-      </ul>{' '}
+      <SearchBar onSearch={hendleSearch} />
+      {isLoading && <Loader />}
+      {isError && <ErrorMessage />}
+      <ImageGallery photos={photos} />
       <Button onClick={hendleClick}>Load more</Button>
     </header>
   );

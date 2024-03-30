@@ -1,92 +1,114 @@
-import { useState } from 'react'; // Import useState hook
+// import toast, { Toaster } from 'react-hot-toast';
+// import style from './SearchBar.module.css';
+// import { FiSearch } from 'react-icons/fi';
+// import { useId } from 'react';
+// import { Formik, Form, Field, ErrorMessage } from 'formik';
+// import * as Yup from 'yup';
 
-import toast, { Toaster } from 'react-hot-toast';
-import style from './SearchBar.module.css';
-import { FiSearch } from 'react-icons/fi';
-import { useId } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+// const SearchBar = ({ hendleSearch }) => {
+//   const nameFieldId = useId();
+//   const notify = () => toast('Search images and photos');
+//   const handleSubmit = values => {
+//     hendleSearch(values);
+//     console.log('values: ', values);
 
-const SearchBar = () => {
-  const [value, setValue] = useState('');
-  const nameFieldId = useId();
-  const notify = () => toast('Search images and photos');
-  const handleSubmit = value => {
-    setValue(''); // Reset input value after form submission
-    notify();
-  };
-  const queryFormSchema = Yup.object().shape({
-    query: Yup.string()
-      .min(3, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
-  });
-
-  return (
-    <Formik
-      validationSchema={queryFormSchema}
-      initialValues={{ query: '' }}
-      onSubmit={handleSubmit}
-    >
-      <Form className={style.formContainer}>
-        <div className={style.inputContainer}>
-          <label htmlFor={nameFieldId}>Search:</label>
-          <Field
-            type="text"
-            name="query"
-            id={nameFieldId}
-            placeholder="Search images and photos"
-            autoComplete="off"
-            autoFocus
-            className={style.input}
-          />
-          <ErrorMessage name="query" as="span" />
-        </div>
-
-        <button className={style.button} type="submit">
-          <FiSearch size="16px" />
-        </button>
-        <Toaster />
-      </Form>
-    </Formik>
-  );
-};
-
-export default SearchBar;
-// import { ErrorMessage, Field, Form, Formik } from "formik";
-// import * as Yup from "yup";
-
-// const searchFormSchema = Yup.object().shape({
-//   searchTerm: Yup.string().required("Search term is required!"),
-// });
-
-// const FORM_INITIAL_VALUES = {
-//   searchTerm: "",
-// };
-
-// const SearchForm = ({ onSetSearchQuery }) => {
-//   const handleSubmit = (values) => {
-//     onSetSearchQuery(values.searchTerm);
+//     notify();
 //   };
+//   const queryFormSchema = Yup.object().shape({
+//     query: Yup.string(),
+//   });
 
 //   return (
 //     <Formik
-//       initialValues={FORM_INITIAL_VALUES}
-//       validationSchema={searchFormSchema}
+//       validationSchema={queryFormSchema}
+//       initialValues={{ query: '' }}
 //       onSubmit={handleSubmit}
 //     >
-//       <Form>
-//         <h2>Search product by brand or name</h2>
-//         <label>
-//           <Field type="text" name="searchTerm" placeholder="Enter search query..." />
-//           <ErrorMessage component="p" name="searchTerm" />
-//         </label>
-//         <button type="submit" aria-label="Search">
-//           🔍
+//       <Form className={style.formContainer}>
+//         <div className={style.inputContainer}>
+//           <label htmlFor={nameFieldId}></label>
+//           <Field
+//             type="text"
+//             name="query"
+//             id={nameFieldId}
+//             placeholder="Search images and photos"
+//             autoComplete="off"
+//             autoFocus
+//             className={style.input}
+//           />
+//           <ErrorMessage name="query" as="span" />
+//         </div>
+
+//         <button className={style.button} type="submit">
+//           <FiSearch size="16px" />
 //         </button>
+//         <Toaster />
 //       </Form>
 //     </Formik>
 //   );
 // };
 
-// export default SearchForm;
+// export default SearchBar;
+// // import toast, { Toaster } from 'react-hot-toast';
+
+// // export const SearchBar = ({ onSubmit }) => {
+// //   const handleSubmit = e => {
+// //     e.preventDefault();
+// //     const inputValue = e.target.elements.search.value;
+// //     console.log(inputValue);
+// //     if (!inputValue) {
+// //       toast.error('This is an error!');
+// //       return;
+// //     }
+// //     onSubmit(inputValue);
+// //     e.target.reset();
+// //   };
+
+// //   return (
+// //     <header>
+// //       <form onSubmit={handleSubmit}>
+// //         <input
+// //           type="text"
+// //           name="search"
+// //           autoComplete="off"
+// //           autoFocus
+// //           placeholder="Search images and photos"
+// //         />
+// //         <button type="submit">Search</button>
+// //       </form>
+// //       <Toaster
+// //         position="top-right"
+// //         toastOptions={{
+// //           duration: 3000,
+// //           style: { background: '#fff', color: '#1f1fc4' },
+// //         }}
+// //       />
+// //     </header>
+// //   );
+// // };
+export const SearchBar = ({ onSearch }) => {
+  const handleSubmit = evt => {
+    evt.preventDefault();
+    const form = evt.target;
+    const topic = form.elements.topic.value;
+
+    // Якщо текстове поле порожнє, виводимо повідомлення
+    // і припиняємо виконання функції.
+    if (form.elements.topic.value.trim() === '') {
+      alert('Please enter search term!');
+      return;
+    }
+
+    // У протилежному випадку викликаємо пропс
+    // і передаємо йому значення поля
+    onSearch(topic);
+    form.reset();
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input type="text" name="topic" placeholder="Пошук статей..." />
+      <button>Пошук</button>
+    </form>
+  );
+};
