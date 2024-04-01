@@ -1,114 +1,44 @@
-// import toast, { Toaster } from 'react-hot-toast';
-// import style from './SearchBar.module.css';
-// import { FiSearch } from 'react-icons/fi';
-// import { useId } from 'react';
-// import { Formik, Form, Field, ErrorMessage } from 'formik';
-// import * as Yup from 'yup';
+import css from './SearchBar.module.css';
+import toast from 'react-hot-toast';
+import { useState } from 'react';
+import { FiSearch } from 'react-icons/fi';
 
-// const SearchBar = ({ hendleSearch }) => {
-//   const nameFieldId = useId();
-//   const notify = () => toast('Search images and photos');
-//   const handleSubmit = values => {
-//     hendleSearch(values);
-//     console.log('values: ', values);
+const SearchBar = ({ onSubmit }) => {
+  const [value, setValue] = useState('');
 
-//     notify();
-//   };
-//   const queryFormSchema = Yup.object().shape({
-//     query: Yup.string(),
-//   });
-
-//   return (
-//     <Formik
-//       validationSchema={queryFormSchema}
-//       initialValues={{ query: '' }}
-//       onSubmit={handleSubmit}
-//     >
-//       <Form className={style.formContainer}>
-//         <div className={style.inputContainer}>
-//           <label htmlFor={nameFieldId}></label>
-//           <Field
-//             type="text"
-//             name="query"
-//             id={nameFieldId}
-//             placeholder="Search images and photos"
-//             autoComplete="off"
-//             autoFocus
-//             className={style.input}
-//           />
-//           <ErrorMessage name="query" as="span" />
-//         </div>
-
-//         <button className={style.button} type="submit">
-//           <FiSearch size="16px" />
-//         </button>
-//         <Toaster />
-//       </Form>
-//     </Formik>
-//   );
-// };
-
-// export default SearchBar;
-// // import toast, { Toaster } from 'react-hot-toast';
-
-// // export const SearchBar = ({ onSubmit }) => {
-// //   const handleSubmit = e => {
-// //     e.preventDefault();
-// //     const inputValue = e.target.elements.search.value;
-// //     console.log(inputValue);
-// //     if (!inputValue) {
-// //       toast.error('This is an error!');
-// //       return;
-// //     }
-// //     onSubmit(inputValue);
-// //     e.target.reset();
-// //   };
-
-// //   return (
-// //     <header>
-// //       <form onSubmit={handleSubmit}>
-// //         <input
-// //           type="text"
-// //           name="search"
-// //           autoComplete="off"
-// //           autoFocus
-// //           placeholder="Search images and photos"
-// //         />
-// //         <button type="submit">Search</button>
-// //       </form>
-// //       <Toaster
-// //         position="top-right"
-// //         toastOptions={{
-// //           duration: 3000,
-// //           style: { background: '#fff', color: '#1f1fc4' },
-// //         }}
-// //       />
-// //     </header>
-// //   );
-// // };
-export const SearchBar = ({ onSearch }) => {
-  const handleSubmit = evt => {
-    evt.preventDefault();
-    const form = evt.target;
-    const topic = form.elements.topic.value;
-
-    // Якщо текстове поле порожнє, виводимо повідомлення
-    // і припиняємо виконання функції.
-    if (form.elements.topic.value.trim() === '') {
-      alert('Please enter search term!');
-      return;
+  const handleSubmit = e => {
+    e.preventDefault();
+    const query = value.trim();
+    if (!query.length) {
+      toast.error('Please, search images and photos');
     }
 
-    // У протилежному випадку викликаємо пропс
-    // і передаємо йому значення поля
-    onSearch(topic);
-    form.reset();
+    onSubmit(query);
+  };
+
+  const handleChange = e => {
+    const { value } = e.target;
+    setValue(value);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" name="topic" placeholder="Пошук статей..." />
-      <button>Пошук</button>
-    </form>
+    <header className={css.search}>
+      <form className={css.form} onSubmit={handleSubmit}>
+        <input
+          className={css.input}
+          type="text"
+          autoComplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+          value={value}
+          onChange={handleChange}
+        />
+        <button className={css.searchBtn} type="submit">
+          <FiSearch size="16px" />
+        </button>
+      </form>
+    </header>
   );
 };
+
+export default SearchBar;

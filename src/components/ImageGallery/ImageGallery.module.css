@@ -1,0 +1,34 @@
+.list {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  list-style-type: none;
+}
+
+.item {
+  width: 164px;
+  height: 110px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+@media (min-width: 920px) {
+  .item {
+    width: 202px;
+    height: 135px;
+  }
+}
+@media (min-width: 1180px) {
+  .item {
+    width: 266px;
+    height: 177px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .item {
+    width: 332px;
+    height: 221px;
+  }
+}

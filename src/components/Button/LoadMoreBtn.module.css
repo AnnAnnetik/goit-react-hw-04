@@ -1,0 +1,8 @@
+.loadBtn {
+  display: block;
+  margin: 0 auto;
+  border: none;
+  color: white;
+  background-color: #181a46;
+  padding: 8px 16px;
+}

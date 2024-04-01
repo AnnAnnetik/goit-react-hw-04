@@ -1,14 +1,16 @@
 import ImageCard from '../ImageCard/ImageCard';
+import css from './ImageGallery.module.css';
 
-export const ImageGallery = ({ photos }) => {
+const ImageGallery = ({ photos, onSelect }) => {
   return (
-    <ul>
-      {Array.isArray(photos) &&
-        photos.map(photo => (
-          <li key={photo.id}>
-            <ImageCard photo={photo} />
-          </li>
-        ))}
+    <ul className={css.list}>
+      {photos.map(photo => (
+        <li className={css.item} key={photo.id}>
+          <ImageCard card={photo} onSelect={onSelect} />
+        </li>
+      ))}
     </ul>
   );
 };
+
+export default ImageGallery;
