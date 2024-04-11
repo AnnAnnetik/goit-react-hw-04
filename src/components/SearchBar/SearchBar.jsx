@@ -1,41 +1,57 @@
-import css from './SearchBar.module.css';
-import toast from 'react-hot-toast';
 import { useState } from 'react';
-import { FiSearch } from 'react-icons/fi';
+import style from './SearchBar.module.css';
+import toast, { Toaster } from 'react-hot-toast';
+import { CiSearch } from 'react-icons/ci';
 
-const SearchBar = ({ onSubmit }) => {
+const notify = () => toast('Search images and photos ❗');
+
+const SearchBar = ({ addImg }) => {
   const [value, setValue] = useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
-    const query = value.trim();
-    if (!query.length) {
-      toast.error('Please, search images and photos');
-    }
 
-    onSubmit(query);
+    addImg(value);
+    setValue('');
   };
 
-  const handleChange = e => {
-    const { value } = e.target;
-    setValue(value);
+  const handleOnChange = event => {
+    setValue(event.target.value);
+  };
+
+  const handleButtonClick = () => {
+    if (!value) {
+      notify();
+    }
   };
 
   return (
-    <header className={css.search}>
-      <form className={css.form} onSubmit={handleSubmit}>
+    <header>
+      <form onSubmit={handleSubmit} className={style.form}>
         <input
-          className={css.input}
+          className={style.input}
+          onChange={handleOnChange}
           type="text"
           autoComplete="off"
           autoFocus
           placeholder="Search images and photos"
+          name="search"
           value={value}
-          onChange={handleChange}
         />
-        <button className={css.searchBtn} type="submit">
-          <FiSearch size="16px" />
+        <button
+          onClick={handleButtonClick}
+          className={style.button}
+          type="submit"
+        >
+          <CiSearch />
         </button>
+        <Toaster
+          toastOptions={{
+            style: {
+              background: 'red',
+            },
+          }}
+        />
       </form>
     </header>
   );

@@ -1,19 +1,22 @@
-import css from './ImageCard.module.css';
-
-const ImageCard = ({ card, onSelect }) => {
+const ImageCard = ({ photo, onSelect }) => {
   return (
-    <div className={css.container}>
-      <img
-        className={css.img}
-        src={card.urls.small}
-        alt={card.alt_description}
-        onClick={() =>
-          onSelect(true, {
-            src: card.urls.regular,
-            description: card.alt_description,
-          })
-        }
-      />
+    <div>
+      <div>
+        <img
+          src={photo.urls.small}
+          alt={photo.alt_description}
+          onClick={() =>
+            onSelect(true, {
+              src: photo.urls.regular,
+              description: photo.alt_description,
+            })
+          }
+        />
+      </div>
+      <h2>{photo.user.name}</h2>
+      <p>Likes: {photo.likes}</p>
+      <p>Total Likes: {photo.user.total_likes}</p>
+      <p>Total Photos: {photo.user.total_photos}</p>
     </div>
   );
 };
