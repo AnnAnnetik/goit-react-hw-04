@@ -1,7 +1,7 @@
 import './App.css';
 import SearchBar from './SearchBar/SearchBar';
 import { getPhotos } from './articles-api';
-import Button from './Button/Button';
+import LoadMoreBtn from './LoadMoreBtn/LoadMoreBtn';
 
 import Loader from './Loader/Loader';
 import ErrorMessage from './ErrorMessage/ErrorMessage';
@@ -67,7 +67,7 @@ function App() {
         photo={selectedPhoto}
         onChange={handleModal}
       />
-      {totalPages > page && <Button onClick={hendleClick}>Load more</Button>}
+      {totalPages > page && <LoadMoreBtn onClick={hendleClick}>Load more</LoadMoreBtn>}
     </div>
   );
 }

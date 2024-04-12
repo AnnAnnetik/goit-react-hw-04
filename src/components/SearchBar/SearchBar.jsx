@@ -10,19 +10,15 @@ const SearchBar = ({ addImg }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-
+    if (!value.trim()) {
+      notify();
+    }
     addImg(value);
     setValue('');
   };
 
   const handleOnChange = event => {
     setValue(event.target.value);
-  };
-
-  const handleButtonClick = () => {
-    if (!value) {
-      notify();
-    }
   };
 
   return (
@@ -38,11 +34,7 @@ const SearchBar = ({ addImg }) => {
           name="search"
           value={value}
         />
-        <button
-          onClick={handleButtonClick}
-          className={style.button}
-          type="submit"
-        >
+        <button className={style.button} type="submit">
           <CiSearch />
         </button>
         <Toaster
